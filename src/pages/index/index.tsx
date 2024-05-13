@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Taro from "@tarojs/taro";
 import { View } from "@tarojs/components";
-import { useLoad } from "@tarojs/taro";
 import CounterCard, { CounterCardInfo } from "@/components/CounterCard";
+import { STORAGE_KEY_COUNTER_INFO_LIST } from "@/common/constant";
 import "./index.scss";
 
 /** 计数器个数选项 */
@@ -11,7 +12,10 @@ const counterNumberList = [1, 2, 3, 4, 5];
 const cardColors = ["#f2c2bf", "#f9ddbc", "#cfefc6", "#d2ddf9", "#d9ccf8"];
 
 /** 计数器初始列表 */
-const initCounterList: CounterCardInfo[] = [
+const counterInfoListStorage = Taro.getStorageSync(
+  STORAGE_KEY_COUNTER_INFO_LIST
+);
+const initCounterList: CounterCardInfo[] = counterInfoListStorage || [
   {
     username: "用户1",
     value: 0,
@@ -21,7 +25,7 @@ const initCounterList: CounterCardInfo[] = [
 
 export default function Index() {
   // 计数器数量
-  const [counterNum, setCounterNum] = useState(1);
+  const [counterNum, setCounterNum] = useState(initCounterList.length);
 
   // 计数器卡片信息
   const [counterCardInfoList, setCounterCardInfoList] =
@@ -31,7 +35,7 @@ export default function Index() {
   const handleChangeCounterNumber = (num: number) => {
     // 更新顶部选项的值
     setCounterNum(num);
-    const newCounterCardInfoList = [...counterCardInfoList].slice(0, num);
+
     // 计数器数量变化量
     const delta = num - counterCardInfoList.length;
     if (delta > 0) {
@@ -45,7 +49,7 @@ export default function Index() {
       }
       setCounterCardInfoList([...counterCardInfoList, ...newCardInfos]);
     } else {
-      setCounterCardInfoList(newCounterCardInfoList);
+      setCounterCardInfoList([...counterCardInfoList].slice(0, num));
     }
   };
 
@@ -109,9 +113,13 @@ export default function Index() {
     ]);
   };
 
-  useLoad(() => {
-    console.log("Page loaded.");
-  });
+  // 当计数器信息变化的时候，更新缓存
+  useEffect(() => {
+    Taro.setStorage({
+      key: STORAGE_KEY_COUNTER_INFO_LIST,
+      data: counterCardInfoList,
+    });
+  }, [counterCardInfoList]);
 
   return (
     <View className="index-container">
