@@ -55,8 +55,10 @@ export default function Index() {
 
   // 减少
   const handleDecrease = (counterIndex: number) => {
-    setCounterCardInfoList([
-      ...counterCardInfoList.map((item, index) => {
+    // 这里写成回调的形式，是因为长按连续增加功能使用了setInterval，会形成闭包
+    // 参考：https://taro-docs.jd.com/blog/2019-07-10-taro-hooks#useeffect-%E4%B8%8E%E5%89%AF%E4%BD%9C%E7%94%A8
+    setCounterCardInfoList((infoList) => [
+      ...infoList.map((item, index) => {
         if (index === counterIndex) {
           return {
             ...item,
@@ -71,8 +73,10 @@ export default function Index() {
 
   // 增加
   const handleIncrease = (counterIndex: number) => {
-    setCounterCardInfoList([
-      ...counterCardInfoList.map((item, index) => {
+    // 这里写成回调的形式，是因为长按连续增加功能使用了setInterval，会形成闭包
+    // 参考：https://taro-docs.jd.com/blog/2019-07-10-taro-hooks#useeffect-%E4%B8%8E%E5%89%AF%E4%BD%9C%E7%94%A8
+    setCounterCardInfoList((infoList) => [
+      ...infoList.map((item, index) => {
         if (index === counterIndex) {
           return {
             ...item,

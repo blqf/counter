@@ -1,20 +1,35 @@
 .counter-card-container {
+  position: relative;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   background-color: #eee;
   border-radius: 10px;
+  overflow: hidden;
+}
+
+.counter-card-progress {
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: 10px;
+  background-color: #0af;
 }
 
 .counter-card-item {
+  flex-shrink: 0;
   display: flex;
   justify-content: space-around;
   align-items: center;
 }
 
-.counter-card-username {
-  text-align: center;
+.counter-card-first-item {
+  margin-top: 10px;
+}
+
+.counter-card-last-item {
+  margin-bottom: 10px;
 }
 
 .counter-card-decrease {
