@@ -107,14 +107,22 @@ export default function Index() {
 
   // 重置所有数值
   const handleResetAll = () => {
-    setCounterCardInfoList([
-      ...counterCardInfoList.map((item) => {
-        return {
-          ...item,
-          value: 0,
-        };
-      }),
-    ]);
+    Taro.showModal({
+      title: "提示",
+      content: "确定重置所有数据吗？",
+      success: function (res) {
+        if (res.confirm) {
+          setCounterCardInfoList([
+            ...counterCardInfoList.map((item) => {
+              return {
+                ...item,
+                value: 0,
+              };
+            }),
+          ]);
+        }
+      },
+    });
   };
 
   // 当计数器信息变化的时候，更新缓存
