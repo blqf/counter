@@ -9,11 +9,18 @@
   overflow: hidden;
 }
 
+.counter-card-delete-icon {
+  position: absolute;
+  top: 15px;
+  right: 10px;
+  opacity: .5;
+}
+
 .counter-card-progress {
+  width: 100%;
   position: absolute;
   top: 0;
-  height: 10px;
-  background-color: #0af;
+  left: 0;
 }
 
 .counter-card-item {

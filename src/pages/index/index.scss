@@ -9,6 +9,7 @@
 .index-header {
   flex-shrink: 0;
   display: flex;
+  align-items: center;
   margin-bottom: 20px;
 }
 
@@ -18,15 +19,18 @@
   justify-content: center;
   align-items: center;
   height: 12vw;
+  margin-right: 20px;
   border-radius: 10px;
-  background-color: rgb(242, 243, 245);
+  background-color: #f2f3f5;
   font-size: 40px;
   font-weight: 500;
   color: rgb(78, 89, 105);
 }
 
-.index-count-num-btn:not(:last-of-type) {
-  margin-right: 20px;
+.index-reset-all-info-btn {
+  flex-shrink: 0;
+  width: 8vw;
+  height: 8vw;
 }
 
 .index-count-num-btn.active {
@@ -51,7 +55,7 @@
   margin-bottom: 20px;
 }
 
-.reset-all-btn {
+.index-reset-all-btn {
   height: 12vw;
   flex-shrink: 0;
   display: flex;

@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import Taro from "@tarojs/taro";
-import { View } from "@tarojs/components";
+import { View, Image } from "@tarojs/components";
 import CounterCard, { CounterCardInfo } from "@/components/CounterCard";
 import { STORAGE_KEY_COUNTER_INFO_LIST } from "@/common/constant";
+import ResetSvg from "@/common/images/reset.svg";
 import "./index.scss";
 
 /** 计数器个数选项 */
@@ -11,25 +12,29 @@ const counterNumberList = [1, 2, 3, 4, 5];
 /** 计数器卡片背景色 */
 const cardColors = ["#f2c2bf", "#f9ddbc", "#cfefc6", "#d2ddf9", "#d9ccf8"];
 
-/** 计数器初始列表 */
+/** 缓存里的计数器初始列表 */
 const counterInfoListStorage = Taro.getStorageSync(
   STORAGE_KEY_COUNTER_INFO_LIST
 );
-const initCounterList: CounterCardInfo[] = counterInfoListStorage || [
+// 自定义的初始列表
+const initCounterList = [
   {
     username: "用户1",
     value: 0,
     backgroundColor: cardColors[0],
   },
 ];
+// 最终的列表，优先使用缓存
+const realInitCounterList: CounterCardInfo[] =
+  counterInfoListStorage || initCounterList;
 
 export default function Index() {
   // 计数器数量
-  const [counterNum, setCounterNum] = useState(initCounterList.length);
+  const [counterNum, setCounterNum] = useState(realInitCounterList.length);
 
   // 计数器卡片信息
   const [counterCardInfoList, setCounterCardInfoList] =
-    useState<CounterCardInfo[]>(initCounterList);
+    useState<CounterCardInfo[]>(realInitCounterList);
 
   // 改变计数器数量
   const handleChangeCounterNumber = (num: number) => {
@@ -51,6 +56,42 @@ export default function Index() {
     } else {
       setCounterCardInfoList([...counterCardInfoList].slice(0, num));
     }
+  };
+
+  // 重置所有计数器信息
+  const handleResetAllInfo = () => {
+    Taro.showModal({
+      title: "提示",
+      content: "此操作会清除所有记录，并回到初始状态！",
+      success: function (res) {
+        if (res.confirm) {
+          // 重置计数器数量数值
+          setCounterNum(1);
+          // 重置计数器卡片数量
+          setCounterCardInfoList(initCounterList);
+        }
+      },
+    });
+  };
+
+  // 删除卡片
+  const handleDeleteCard = (deleteIndex: number) => {
+    Taro.showModal({
+      title: "提示",
+      content: `确定删除“${counterCardInfoList[deleteIndex].username}”这个计数卡片吗？`,
+      success: function (res) {
+        if (res.confirm) {
+          // 更新顶部选项的值
+          setCounterNum(counterNum - 1);
+          // 计数器卡片变化
+          setCounterCardInfoList(
+            counterCardInfoList.filter((_info, index) => {
+              return index !== deleteIndex;
+            })
+          );
+        }
+      },
+    });
   };
 
   // 减少
@@ -106,10 +147,10 @@ export default function Index() {
   };
 
   // 重置所有数值
-  const handleResetAll = () => {
+  const handleResetAllData = () => {
     Taro.showModal({
       title: "提示",
-      content: "确定重置所有数据吗？",
+      content: "确定重置全部数值吗？",
       success: function (res) {
         if (res.confirm) {
           setCounterCardInfoList([
@@ -150,6 +191,11 @@ export default function Index() {
             </View>
           );
         })}
+        <Image
+          className="index-reset-all-info-btn"
+          src={ResetSvg}
+          onClick={handleResetAllInfo}
+        />
       </View>
       {/* 计数器卡片部分 */}
       <View className="index-main">
@@ -159,17 +205,19 @@ export default function Index() {
               <CounterCard
                 counterCardInfo={cardInfo}
                 counterIndex={index}
+                showDeleteBtn={counterCardInfoList.length > 1}
                 onDecrease={handleDecrease}
                 onIncrease={handleIncrease}
                 onReset={handleReset}
+                onDeleteCounterCard={handleDeleteCard}
               />
             </View>
           );
         })}
       </View>
-      {/* 全部重置按钮 */}
-      <View className="reset-all-btn" onClick={handleResetAll}>
-        全部重置
+      {/* 重置全部数值按钮 */}
+      <View className="index-reset-all-btn" onClick={handleResetAllData}>
+        重置全部数值
       </View>
     </View>
   );

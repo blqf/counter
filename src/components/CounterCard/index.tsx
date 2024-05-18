@@ -1,4 +1,4 @@
-import { View } from "@tarojs/components";
+import { Icon, Progress, View } from "@tarojs/components";
 import "./index.scss";
 
 export interface CounterCardInfo {
@@ -15,6 +15,10 @@ interface CounterCardProps {
   counterCardInfo: CounterCardInfo;
   /** 卡片索引 */
   counterIndex: number;
+  /** 是否展示删除按钮 */
+  showDeleteBtn: boolean;
+  /** 删除卡片的回调 */
+  onDeleteCounterCard?: (counterIndex: number) => void;
   /** 减少按钮的回调 */
   onDecrease?: (counterIndex: number) => void;
   /** 增加按钮的回调 */
@@ -30,8 +34,15 @@ let increaceInterval: NodeJS.Timeout;
 let decreaceInterval: NodeJS.Timeout;
 
 export default function CounterCard(props: CounterCardProps) {
-  const { counterCardInfo, counterIndex, onDecrease, onIncrease, onReset } =
-    props;
+  const {
+    counterCardInfo,
+    counterIndex,
+    showDeleteBtn,
+    onDeleteCounterCard,
+    onDecrease,
+    onIncrease,
+    onReset,
+  } = props;
 
   return (
     <View
@@ -40,12 +51,20 @@ export default function CounterCard(props: CounterCardProps) {
         backgroundColor: counterCardInfo.backgroundColor,
       }}
     >
-      <View
-        className="counter-card-progress"
-        style={{
-          width: `${Math.max(counterCardInfo.value, 0)}%`,
-        }}
-      ></View>
+      {showDeleteBtn && (
+        <Icon
+          className="counter-card-delete-icon"
+          size="18"
+          type="clear"
+          onClick={() => onDeleteCounterCard?.(counterIndex)}
+        />
+      )}
+      <View className="counter-card-progress">
+        <Progress
+          percent={Math.max(counterCardInfo.value, 0)}
+          strokeWidth={4}
+        />
+      </View>
       <View className="counter-card-item counter-card-first-item">
         {counterCardInfo.username}
       </View>
