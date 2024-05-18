@@ -1,0 +1,70 @@
+.mask {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 50;
+    background-color: rgba($color: #000, $alpha: .5);
+}
+
+.confirm-modal-container {
+  width: 600px;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -70%);
+  z-index: 100;
+  background-color: #fff;
+  border-radius: 30px;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.confirm-modal-title {
+  padding-top: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 40px;
+}
+
+.confirm-modal-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.confirm-modal-btn-wrapper {
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+
+.confirm-modal-cancel-btn {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 40px;
+  border-right: 0.5px solid #ddd;
+}
+
+.confirm-modal-submit-btn {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+  font-size: 40px;
+}

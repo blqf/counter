@@ -19,7 +19,7 @@ const counterInfoListStorage = Taro.getStorageSync(
 // 自定义的初始列表
 const initCounterList = [
   {
-    username: "用户1",
+    nickname: "1号",
     value: 0,
     backgroundColor: cardColors[0],
   },
@@ -47,7 +47,7 @@ export default function Index() {
       const newCardInfos: CounterCardInfo[] = [];
       for (let i = 0; i < delta; i++) {
         newCardInfos.push({
-          username: `用户${counterCardInfoList.length + i + 1}`,
+          nickname: `${counterCardInfoList.length + i + 1}号`,
           value: 0,
           backgroundColor: cardColors[counterCardInfoList.length + i],
         });
@@ -78,7 +78,7 @@ export default function Index() {
   const handleDeleteCard = (deleteIndex: number) => {
     Taro.showModal({
       title: "提示",
-      content: `确定删除“${counterCardInfoList[deleteIndex].username}”这个计数卡片吗？`,
+      content: `确定删除“${counterCardInfoList[deleteIndex].nickname}”这个计数卡片吗？`,
       success: function (res) {
         if (res.confirm) {
           // 更新顶部选项的值
@@ -123,6 +123,22 @@ export default function Index() {
             ...item,
             value: item.value + 1,
           };
+        } else {
+          return item;
+        }
+      }),
+    ]);
+  };
+
+  // 编辑昵称，数值
+  const handleEdit = (
+    newCounterCardInfo: CounterCardInfo,
+    counterIndex: number
+  ) => {
+    setCounterCardInfoList((infoList) => [
+      ...infoList.map((item, index) => {
+        if (index === counterIndex) {
+          return newCounterCardInfo;
         } else {
           return item;
         }
@@ -192,7 +208,7 @@ export default function Index() {
           );
         })}
         <Image
-          className="index-reset-all-info-btn"
+          className="index-reset-all-info-icon"
           src={ResetSvg}
           onClick={handleResetAllInfo}
         />
@@ -210,6 +226,7 @@ export default function Index() {
                 onIncrease={handleIncrease}
                 onReset={handleReset}
                 onDeleteCounterCard={handleDeleteCard}
+                onEdit={handleEdit}
               />
             </View>
           );
