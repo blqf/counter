@@ -2,7 +2,7 @@
   "miniprogramRoot": "dist/",
   "projectname": "counter",
   "description": "counter utils",
-  "appid": "wx429a8859e18dc592",
+  "appid": "wx32562acef319f4bd",
   "setting": {
     "urlCheck": true,
     "es6": false,
