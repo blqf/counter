@@ -63,7 +63,7 @@ export default function CounterCard(props: CounterCardProps) {
         <Input
           type="text"
           placeholder="请输入备注昵称"
-          defaultValue={editNickname.current}
+          defaultValue={counterCardInfo.nickname}
           focus
           maxlength={15}
           onInput={(e) => {
@@ -90,7 +90,7 @@ export default function CounterCard(props: CounterCardProps) {
         <Input
           type="number"
           placeholder="请输入数值"
-          defaultValue={`${editValue.current}`}
+          defaultValue={`${counterCardInfo.value}`}
           focus
           maxlength={8}
           onInput={(e) => {
